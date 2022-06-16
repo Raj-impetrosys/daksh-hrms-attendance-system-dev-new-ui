@@ -1,0 +1,9 @@
+First last Name = hrms attendance
+Orgenization = Flexion Infotech
+storePassword = Hrms#2K21
+keyPassword = Hrms#2K21
+keyAlias = Hrmsattendance
+storeFile= repo\relese data\bluebox downloader.jks
+appId = com.example.dakshattendance
+versionCode = 1
+versionName = 1.0

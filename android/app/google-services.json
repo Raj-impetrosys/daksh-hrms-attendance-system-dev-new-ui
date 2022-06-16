@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "40984561169",
+    "project_id": "core-falcon-331611",
+    "storage_bucket": "core-falcon-331611.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40984561169:android:15cdc2fbe4ae3788f353b0",
+        "android_client_info": {
+          "package_name": "daksh.hrms.attendance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40984561169-d1jignjsk3dcoknna01lf5emhense3lt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByS5NjwRVG_lYHHea8pSZns4T5Dri8J1c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40984561169-d1jignjsk3dcoknna01lf5emhense3lt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
