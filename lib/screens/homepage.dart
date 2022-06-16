@@ -155,6 +155,7 @@ class _MyHomepageState extends State<MyHomepage> {
 
   // String _locationMessage = "";
   Future _getCurrentLocation(bool isChecking) async {
+    Geolocator.checkPermission().then((value) => print(value));
     Geolocator.requestPermission();
     final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -326,7 +327,8 @@ class _MyHomepageState extends State<MyHomepage> {
                       GestureDetector(
                         onTap: () async {
                           // _getCurrentLocation();
-                          var status = await Permission.location.status;
+                          // var status = await Permission.location.status;
+                          var status = await Geolocator.checkPermission();
                           // if (!PrefObj.preferences!
                           //     .containsKey(PrefKeys.DisApproved)) {
                           //   showAlert(context);
@@ -347,13 +349,16 @@ class _MyHomepageState extends State<MyHomepage> {
                           //     offlineDataa(true);
                           //   }
                           // }
-                          if (status.isGranted) {
+                          print("status: ${status.name}");
+                          print("status: $connected");
+                          if (await Geolocator.isLocationServiceEnabled()) {
                             if (connected!) {
                               oncheckinapi();
                             } else {
                               offlineDataa(false);
                             }
-                          } else if (status.isDenied) {
+                          } else {
+                            Permission.location.request();
                             _getCurrentLocation(false);
                           }
                         },
@@ -472,7 +477,8 @@ class _MyHomepageState extends State<MyHomepage> {
                       GestureDetector(
                         onTap: () async {
                           // _getCurrentLocation();
-                          var status = await Permission.location.status;
+                          // var status = await Permission.location.status;
+                          LocationPermission status = await Geolocator.checkPermission();
                           // if (!PrefObj.preferences!
                           //     .containsKey(PrefKeys.DisApproved)) {
                           //   _getCurrentLocation(true);
@@ -480,13 +486,13 @@ class _MyHomepageState extends State<MyHomepage> {
                           //   showAlert(context);
                           // }
 
-                          if (status.isGranted) {
+                          if (await Geolocator.isLocationServiceEnabled()) {
                             if (connected!) {
                               oncheckoutapi();
                             } else {
                               offlineDataa(false);
                             }
-                          } else if (status.isDenied) {
+                          } else {
                             _getCurrentLocation(false);
                           }
 
