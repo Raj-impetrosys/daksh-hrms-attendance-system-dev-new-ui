@@ -27,11 +27,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Location is required to find out where you are</string>
+	<string>The app is requiring the current location where are you checking IN/OUT from.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Location is required to find out where you are</string>
+	<string>The app is requiring the current location where are you checking IN/OUT from.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location is required to find out where you are</string>
+	<string>The app is requiring the current location where are you checking IN/OUT from.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
