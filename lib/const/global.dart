@@ -236,6 +236,8 @@ class CustomeTextField extends StatelessWidget {
   final bool? enable;
   final TextEditingController controller;
   final FocusNode focusNode;
+  final String? Function(dynamic value) validator;
+  final bool readOnly;
 
   const CustomeTextField({
     Key? key,
@@ -243,25 +245,29 @@ class CustomeTextField extends StatelessWidget {
     required this.prifixasset,
     required this.controller,
     required this.focusNode,
-    required String? Function(dynamic value) validator,
+    required this.validator,
     this.onTap,
-    this.errorText, this.enable,
+    this.errorText,
+    this.enable,
+    this.readOnly = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: readOnly,
       enabled: enable,
       textInputAction: TextInputAction.next,
       focusNode: focusNode,
       onTap: onTap,
       controller: controller,
+      validator: validator,
       decoration: InputDecoration(
         errorText: errorText,
         prefixIcon: Container(
           height: 10.h,
           width: 10.h,
-          padding: EdgeInsets.only(right: 20.0,left: 20.0),
+          padding: EdgeInsets.only(right: 20.0, left: 20.0),
           margin:
               EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0, bottom: 12.0),
           decoration: BoxDecoration(

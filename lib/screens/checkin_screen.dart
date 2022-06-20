@@ -9,6 +9,7 @@ import 'package:dakshattendance/repository/repository.dart';
 import 'package:dakshattendance/shared_preference/pref_keys.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -32,18 +33,15 @@ class _CheckInState extends State<CheckIn> {
 
   DateTime nows = DateTime.now();
 
-  String? _chosenValue = 'Check In';
+  // String? _chosenValue = 'Check In';
   var userData;
 
   bool autoValidate = false;
-  bool _validate = false;
-  bool _validate1 = false;
-
   @override
   void initState() {
     super.initState();
     userData = json.decode(PrefObj.preferences!.get(PrefKeys.USERDATA));
-    time = '${nows.hour}:${nows.minute}';
+    _time.text = '${nows.hour}:${nows.minute}';
   }
 
   bool isTimeCheck = false;
@@ -67,8 +65,8 @@ class _CheckInState extends State<CheckIn> {
     return _date;
   }
 
-  String? time;
-  String? message;
+  // String? time;
+  // String? message;
 
   //----------------------------------------//
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -190,50 +188,16 @@ class _CheckInState extends State<CheckIn> {
                         ),
                       ],
                     ),
-                    // GestureDetector(
-                    //   onTap: () async {
-                    //     fromDate = await selectDate(context, fromDate);
-                    //     setState(() {
-                    //       // isDateCheck == false ? true : isDateCheck = false;
-                    //     });
-                    //   },
-                    //   child: Center(
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.only(left: 100.0, right: 100.0),
-                    //       child: Card(
-                    //         elevation: 0.0,
-                    //         color: AppColor.cardColor.withOpacity(0.2),
-                    //         child: Padding(
-                    //             padding: const EdgeInsets.only(
-                    //                 left: 10.0,
-                    //                 right: 10.0,
-                    //                 top: 10.0,
-                    //                 bottom: 10.0),
-                    //             child: Row(
-                    //               children: [
-                    //                 Text(
-                    //                   "${formatter.format(fromDate)}",
-                    //                   style: TextStyle(
-                    //                       fontFamily: "roboto",
-                    //                       fontSize: 12.sp,
-                    //                       color: Colors.black),
-                    //                 ),
-                    //                 Spacer(),
-                    //                 Image.asset(
-                    //                   "assets/images/Vector.png",
-                    //                   height: 16.h,
-                    //                   width: 16.w,
-                    //                 ),
-                    //               ],
-                    //             )),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     SizedBox(
                       height: 50.h,
                     ),
-                    GestureDetector(
+                    TextFormField(
+                      // enabled: false,
+                      readOnly: true,
+                      enableInteractiveSelection: false,
+                      textInputAction: TextInputAction.done,
+                      focusNode: checkFocusNode,
+                      controller: _inOut,
                       onTap: () {
                         setState(() {
                           // isClick == false ? isClick = true : isClick = false;
@@ -285,7 +249,8 @@ class _CheckInState extends State<CheckIn> {
                                           setState(
                                             () {
                                               _text = "Check In";
-                                              _chosenValue = _text;
+                                              // _chosenValue = _text;
+                                              _inOut.text = _text;
                                               Navigator.pop(context);
                                             },
                                           );
@@ -324,7 +289,8 @@ class _CheckInState extends State<CheckIn> {
                                           setState(
                                             () {
                                               _text = "Check Out";
-                                              _chosenValue = _text;
+                                              // _chosenValue = _text;
+                                              _inOut.text = _text;
                                             },
                                           );
                                           Navigator.pop(context);
@@ -358,148 +324,57 @@ class _CheckInState extends State<CheckIn> {
                               });
                         });
                       },
-                      child: TextFormField(
-                        enabled: false,
-                        enableInteractiveSelection: false,
-                        textInputAction: TextInputAction.done,
-                        focusNode: checkFocusNode,
-                        controller: _inOut,
-                        // onTap: onTap,
-                        obscureText: isClick == false ? true : false,
-                        decoration: InputDecoration(
-                          prefixIcon: Container(
+                      // obscureText: isClick == false ? true : false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Activity Can\'t be empty";
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: Container(
+                          height: 10.h,
+                          width: 10.h,
+                          margin: EdgeInsets.only(
+                              left: 10.0, right: 10.0, top: 10.0, bottom: 10.0),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image:
+                                  AssetImage("assets/images/fingerprint.png"),
+                            ),
+                          ),
+                        ),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isClick;
+                              // isClick == false ? isClick = true : isClick = false;
+                            });
+                          },
+
+                          // child: _dropDownButton(),
+                          child: Container(
                             height: 10.h,
                             width: 10.h,
-                            margin: EdgeInsets.only(
-                                left: 10.0,
-                                right: 10.0,
-                                top: 10.0,
-                                bottom: 10.0),
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image:
-                                    AssetImage("assets/images/fingerprint.png"),
-                              ),
-                            ),
                           ),
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                isClick;
-                                // isClick == false ? isClick = true : isClick = false;
-                              });
-                            },
-
-                            // child: _dropDownButton(),
-                            child: Container(
-                              height: 10.h,
-                              width: 10.h,
-                            ),
-                          ),
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color(0xffACB1C1), width: 1.5),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color(0xffACB1C1), width: 1.5),
-                          ),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          hintText: " ${_text}",
-                          hintStyle: TextStyle(
-                            fontFamily: "prompt",
-                            fontSize: 14.sp,
-                            color: Colors.black,
-                          ),
+                        ),
+                        border: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xffACB1C1), width: 1.5),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xffACB1C1), width: 1.5),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        hintText: " ${_text}",
+                        hintStyle: TextStyle(
+                          fontFamily: "prompt",
+                          fontSize: 14.sp,
+                          color: Colors.black,
                         ),
                       ),
                     ),
-                    // DropdownButtonFormField2(
-                    //   decoration: InputDecoration(
-                    //     prefixIcon: Container(
-                    //       margin: EdgeInsets.only(
-                    //         top: 15.0,
-                    //         left: 8.0,
-                    //         right: 8.0,
-                    //       ),
-                    //       child:
-                    //     ),
-                    //     isDense: true,
-                    //     contentPadding: EdgeInsets.zero,
-                    //     border: UnderlineInputBorder(
-                    //       borderSide:
-                    //           BorderSide(color: Color(0xffACB1C1), width: 1.0),
-                    //     ),
-                    //     focusedBorder: UnderlineInputBorder(
-                    //       borderSide:
-                    //           BorderSide(color: Color(0xffACB1C1), width: 1.0),
-                    //     ),
-                    //   ),
-                    //   isExpanded: true,
-                    //   alignment: Alignment.centerLeft,
-                    //   hint: Padding(
-                    //     padding: const EdgeInsets.only(right: 10.0, top: 10.0),
-                    //     child: const Text(
-                    //       'Enter Your Activity',
-                    //       style: TextStyle(fontSize: 14),
-                    //     ),
-                    //   ),
-                    //   icon: const Icon(
-                    //     Icons.arrow_drop_down,
-                    //     color: Colors.black45,
-                    //   ),
-                    //   iconSize: 30,
-                    //   buttonHeight: 60,
-                    //   buttonPadding: const EdgeInsets.only(left: 20, right: 10),
-                    //   dropdownDecoration: BoxDecoration(
-                    //     borderRadius: BorderRadius.circular(15),
-                    //   ),
-                    //   items: [
-                    //     ...MenuItems.firstItems.map(
-                    //       (item) => DropdownMenuItem<MenuItem>(
-                    //         value: item,
-                    //         child: Padding(
-                    //           padding:
-                    //               const EdgeInsets.only(right: 20.0, top: 10.0),
-                    //           child: MenuItems.buildItem(item),
-                    //         ),
-                    //           onTap: () {
-                    //           setState(() {
-                    //             isselected = true;
-                    //           });
-                    //         },
-                    //       ),
-                    //     ),
-                    //     const DropdownMenuItem<Divider>(
-                    //         enabled: false, child: Divider()),
-                    //     ...MenuItems.secondItems.map(
-                    //       (item) => DropdownMenuItem<MenuItem>(
-                    //         value: item,
-                    //         child: Padding(
-                    //           padding:
-                    //               const EdgeInsets.only(top: 10.0, right: 20.0),
-                    //           child: MenuItems.buildItem(item),
-                    //         ),
-                    //         onTap: () {
-                    //           setState(() {
-                    //             isselected = true;
-                    //           });
-                    //         },
-                    //       ),
-                    //     ),
-                    //   ],
-                    //   validator: (value) {
-                    //     if (value == null) {
-                    //       return 'Please Enter Your Activity.';
-                    //     }
-                    //   },
-                    //   onChanged: (value) {
-                    //     //Do something when changing the item if you want.
-                    //   },
-                    //   onSaved: (value) {
-                    //     // selectedValue = value.toString();
-                    //   },
-                    // ),
                     const SizedBox(height: 30),
                     GestureDetector(
                       onTap: () async {
@@ -509,8 +384,9 @@ class _CheckInState extends State<CheckIn> {
                         });
                       },
                       child: CustomeTextField(
-                        enable: false,
-                        hintText: isTimeCheck ? time : " Enter Time",
+                        // enable: false,
+                        readOnly: true,
+                        hintText: isTimeCheck ? _time.text : " Enter Time",
                         prifixasset: "assets/images/time.png",
                         controller: _time,
                         onTap: () {
@@ -520,11 +396,11 @@ class _CheckInState extends State<CheckIn> {
                         focusNode: dateFocusNode,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Date Can\'t be empty";
+                            return "Date & Time Can\'t be empty";
                           }
                           return null;
                         },
-                        errorText: _validate ? "Time Can't be empty" : null,
+                        // errorText: _validate ? "Time Can't be empty" : null,
                       ),
                     ),
                     SizedBox(
@@ -534,7 +410,7 @@ class _CheckInState extends State<CheckIn> {
                       hintText: " Enter Message",
                       prifixasset: "assets/images/speech-bubble.png",
                       controller: _messagetext,
-                      errorText: _validate ? "Enter Message" : null,
+                      // errorText: _validate ? "Enter Message" : null,
                       focusNode: msgFocusNode,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -546,28 +422,35 @@ class _CheckInState extends State<CheckIn> {
                     Button(
                       textName: "Submit",
                       onTap: () {
-                        _validateInputs();
+                        // print(_formKey.currentState!.validate());
+                        // _validateInputs();
                         FocusScope.of(context).requestFocus(FocusNode());
-                        message = _messagetext.text;
+                        // message = _messagetext.text;
                         if (_time.text.isNotEmpty) {
                           if (_formKey.currentState!.validate()) {
-                            message = _messagetext.text;
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            _chosenValue == 'Check In'
-                                ? onapprovalcheckinapi()
-                                : onapprovalcheckoutapi();
-                            print(_chosenValue);
+                            // message = _messagetext.text;
+                            // FocusScope.of(context).requestFocus(FocusNode());
+                            if (_selectedDay == null) {
+                              Fluttertoast.showToast(
+                                  msg: 'Please select a date...');
+                            } else {
+                              _inOut.text == 'Check In'
+                                  ? onapprovalcheckinapi()
+                                  : onapprovalcheckoutapi();
+                            }
+
+                            print(_inOut.text);
                           }
                         } else {
-                          if (_time.text.isEmpty) {
-                            _time.text.isEmpty
-                                ? _validate = true
-                                : _validate = false;
-                          }
-                          if (_formKey.currentState!.validate()) {
-                            message = _messagetext.text;
-                            FocusScope.of(context).requestFocus(FocusNode());
-                          }
+                          // if (_time.text.isEmpty) {
+                          //   _time.text.isEmpty
+                          //       ? _validate = true
+                          //       : _validate = false;
+                          // }
+                          // if (_formKey.currentState!.validate()) {
+                          //   // message = _messagetext.text;
+                          //   FocusScope.of(context).requestFocus(FocusNode());
+                          // }
 
                           setState(() {});
                         }
@@ -639,14 +522,14 @@ class _CheckInState extends State<CheckIn> {
                   onDateTimeChanged: (val) {
                     setState(
                       () {
-                        time = '${val.hour}:${val.minute}';
+                        // time = '${val.hour}:${val.minute}';
                         isTimeCheck = true;
                         _time.text = '${val.hour}:${val.minute}';
-                        if (_time.text.isEmpty) {
-                          _validate = true;
-                        } else {
-                          _validate = false;
-                        }
+                        // if (_time.text.isEmpty) {
+                        //   _validate = true;
+                        // } else {
+                        //   _validate = false;
+                        // }
                       },
                     );
                   },
@@ -694,9 +577,9 @@ class _CheckInState extends State<CheckIn> {
             userData['emp_code'],
             userData['username'],
             formatter.format(_selectedDay!),
-            time!,
+            _time.text,
             '0:00',
-            message!);
+            _messagetext.text);
     if (isapprovalcheckin.status == "Success") {
       Loader().hideLoader(context);
       var snackBar = SnackBar(
@@ -735,8 +618,8 @@ class _CheckInState extends State<CheckIn> {
             userData['username'],
             formatter.format(_selectedDay!),
             '0:00',
-            time!,
-            message!);
+            _time.text,
+            _messagetext.text);
     if (isapprovalcheckout.status == "Success") {
       SnackBar(content: Text("Daily Attendance Approval Request Added"));
       Loader().hideLoader(context);
@@ -768,104 +651,13 @@ class _CheckInState extends State<CheckIn> {
 
   //================================ Check Validation ============================//
 
-  void _validateInputs() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-    } else {
-      setState(() {
-        autoValidate = true;
-      });
-    }
-  }
-
-  //---------------------------------Show DialogBox--------------------------------------//
-  // showMyAlertDialog(BuildContext context) {
-  //   // var javascript = ProgrammingLanguage("Enter Your Activity");
-  //   var htmlCss = ProgrammingLanguage("Check In");
-  //   var sql = ProgrammingLanguage("Check Out");
-
-  //   // Create SimpleDialog
-  //   SimpleDialog dialog = SimpleDialog(
-  //     elevation: 0.0,
-  //     titlePadding:
-  //         EdgeInsets.only(bottom: 0.0, left: 20.0, right: 10.0, top: 10.0),
-  //     title: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         Align(
-  //           alignment: Alignment.bottomRight,
-  //           child: GestureDetector(
-  //             onTap: () => Navigator.pop(context),
-  //             child: Icon(
-  //               Icons.close,
-  //               size: 16.h,
-  //               color: Colors.red,
-  //             ),
-  //           ),
-  //         ),
-  //         const Text('Enter Your Activity :'),
-  //       ],
-  //     ),
-  //     children: <Widget>[
-  //       // SimpleDialogOption(
-  //       //     onPressed: () {
-  //       //       // Close and return value
-  //       //       Navigator.pop(context, javascript);
-  //       //     },
-  //       //     child: Text(javascript.name)
-  //       // ),
-  //       SimpleDialogOption(
-  //         onPressed: () {
-  //           // Close and return value
-  //           Navigator.pop(context, htmlCss);
-  //         },
-  //         child: Text(htmlCss.name),
-  //       ),
-  //       Divider(
-  //         height: 10.h,
-  //         thickness: 1.5,
-  //         color: Color(0xff7A6565).withOpacity(0.2),
-  //       ),
-  //       SimpleDialogOption(
-  //         onPressed: () {
-  //           // Close and return value
-  //           Navigator.pop(context, sql);
-  //         },
-  //         child: Text(sql.name),
-  //       ),
-  //       // SimpleDialog(
-  //       //   children: [
-  //       //     Container(
-  //       //       height: ,
-  //       //     )
-  //       //   ],
-  //       // )
-  //     ],
-  //   );
-
-  //   Future futureValue = showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return dialog;
-  //       });
-
-  //   futureValue.then((language) => {
-  //         this.setState(() {
-  //           this.selectedLanguage = language;
-  //           _text = this.selectedLanguage.name;
-  //           _chosenValue = _text;
-  //           print("==-=-=-=-=-=-$_chosenValue");
-  //         })
-  //       });
+  // void _validateInputs() {
+  //   if (_formKey.currentState!.validate()) {
+  //     _formKey.currentState!.save();
+  //   } else {
+  //     setState(() {
+  //       autoValidate = true;
+  //     });
+  //   }
   // }
 }
-
-// class ProgrammingLanguage {
-//   String name;
-//   // double percent;
-
-//   ProgrammingLanguage(
-//     this.name,
-//     // this.percent,
-//   );
-// }
